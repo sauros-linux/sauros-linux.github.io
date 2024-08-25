@@ -11,7 +11,7 @@
 body {
   font-family: Helvetica;
   margin: 0;
-  background-color: #1b1b1b;
+  background-color: var(--green);
   color: #f9ffea;
 }
 
@@ -25,7 +25,7 @@ body {
 }
 
 a {
-  color: var(--lighter-green);
+  color: #81c1a1;
   font-weight: bold;
 }
 
@@ -37,6 +37,9 @@ a {
   background-image: var(--header-image);
   background-size: 100%;
   background-position: center;
+  margin-top: 4px;
+
+  border-radius: 4px;
 }
 
 .reference {
@@ -45,10 +48,12 @@ a {
   right: 0;
   bottom: 0;
 
-  padding: 4px 6px;
+  padding: 4px 8px;
 
   background-color: var(--dark-green);
   color: #f9ffea;
+
+  border-radius: 4px;
 }
 
 .title > * {
@@ -59,34 +64,48 @@ a {
 .nav {
   display: flex;
   background-color: var(--light-green);
-  width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 8px 0;
   justify-content: space-evenly;
+  overflow: hidden;
+
+  border-radius: 4px;
 }
 
 .nav a {
   width: 100%;
-  color: var(--darker-green);
   font-weight: 800;
   text-decoration: none;
   text-align: center;
   line-height: 40px;
   cursor: pointer;
-}
-.nav a:hover {
-  background-color: #FFFFFF;
+
+  color: #FFFFFF;
+  background-color: #2e4034;
+
+  transition: 0.1s all ease-in-out;
 }
 .nav a.active {
+  background-color: #81c1a1;
+}
+.nav a:hover {
   background-color: var(--lighter-green);
 }
 
 .flex {
   display: flex;
+
+  border: 3px solid #2e4034;
+  border-radius: 4px;
+
+  transition: 0.1s all ease-in-out;
+}
+.flex:hover {
+  border-color: var(--light-green);
 }
 
 main {
-  background-color: var(--green);
+  background-color: #1b1b1b;
   flex: 1;
   padding: 20px;
   order: 2;
@@ -98,7 +117,7 @@ main {
 
 #rightSidebar {
   order: 3;
-  background-color: var(--dark-green);
+  background-color: #5a856f;
   width: 200px;
   font-size: smaller;
 }
@@ -110,11 +129,11 @@ main {
 }
 
 strong {
-  color: #7dcf5c;
+  color: #81c1a1;
 }
 
 .box {
-  background-color: #172d09;
+  background-color: #81c1a1;
   padding: 8px;
   position: relative;
 }
@@ -125,7 +144,7 @@ footer {
   padding: 10px;
   text-align: center;
 
-  background-color: #1b1b1b;
+  background-color: rgba(0,0,0,0.0);
 }
 
 @media only screen and (max-width: 800px) {

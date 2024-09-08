@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @font-face { font-family: 'Modesto Condensed Bold'; src: url('modesto-condensed-bold.ttf'); }
+            @font-face { font-family: 'Bookmania'; src: url("Fontspring-DEMO-bookmania-regular.otf"); }
+            @font-face { font-family: 'FF Scala Sans'; src: url("ScalaSans.otf"); }
+
+            body {
+                font-family: "FF Scala Sans";
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                margin: 16px 0px 8px 0px;
+                font-family: "Modesto Condensed Bold";
+                font-weight: normal;
+            }
+            p {
+                margin: 0px;
+            }
+
+            .container {
+                display: flex;
+                margin: 4px 0px;
+                width: calc(100% - 2 * 2px - 2 * 12px);
+            }
+
+            fieldset {
+                padding: 8px;
+                
+                border: 1px solid #808080;
+                border-radius: 6px;
+            }
+
+            #class_list {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            #class_list > div {
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+
+            li > p {
+                display: inline;
+                margin: 0px;
+            }
+            .source {
+                padding-left: 4px;
+                color: #FF0000;
+            }
+
+            table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: separate;
+                border-spacing: 2px;
+            }
+            tr, td {
+                padding: 0px;
+            }
+
+            input, select {
+                width: 100%;
+                height: 100%;
+                padding: 4px;
+                box-sizing: border-box;
+                font-family: "FF Scala Sans";
+
+                font-size: small;
+                border-width: 0px 0px 1px 0px;
+                border-style: solid;
+                border-color: #808080;
+                background-color: #FFFFFF;
+            }
+            input:hover, select:hover {
+                background-color: #EEEEEE;
+            }
+            input:focus, select:focus {
+                outline: none;
+            }
+
+            label {
+                font-family: "FF Scala Sans";
+                font-size: small;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            td:has(> .value-list), div:has(> .value-list) {
+                position: relative;
+            }
+            .value-list {
+                position: absolute;
+                top: 100%;
+                left: 0px;
+                margin: 2px;
+                padding: 0px;
+                z-index: 5;
+
+                width: calc(100% - 6px);
+            }
+
+            .value-list {
+                list-style: none;
+                overflow: hidden;
+                max-height: 0;
+
+                font-size: small;
+                border: 0px solid #808080;
+                border-radius: 4px;
+                background-color: #FFFFFF;
+            }
+            .value-list.open {
+                max-height: 320px;
+                overflow: auto;
+
+                border-width: 1px;
+            }
+            .value-list > li {
+                position: relative;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                opacity: 1;
+
+                padding: 2px 0px 2px 4px;
+            }
+            .value-list > li:hover {
+                background-color: #EEEEEE;
+            }
+            .value-list > li.closed {
+                max-height: 0;
+                overflow: hidden;
+                display: none;
+                margin: 0px;
+                padding: 0px;
+                opacity: 0;
+            }
+            .value-list > li.sub {
+                padding: 2px 0px 2px 16px;
+            }
+        </style>
+    </head>
+    <body>
+        <form>
+            <fieldset class="container">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <input type="text"      id="name"           name="name" placeholder="Character Name">
+                            <label>Character Name</label>
+                        </td>
+                        <td>
+                            <input type="text"      id="player"         name="player" placeholder="Player Name">
+                            <label>Player Name</label>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset class="container">
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="text"              id="race"           name="race"         value="" placeholder="Race"
+                                    class="chosen-value">
+                                <ul class="value-list"          id="race_list"></ul>
+                                <label>Race / Species</label>
+                            </td>
+                        </tr>
+                    </table>
+                    <h3>Racial Traits</h3>
+                    <p>Racial Traits.</p>
+                </div>
+            </fieldset>
+            <fieldset class="container">
+                <div id="class_list">
+                    <table>
+                        <tr>
+                            <td colspan="6">
+                                <input type="text"      id="class1"         name="class1"       value="" placeholder="Class"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class1_list"></ul>
+                                <label>Class</label>
+                            </td>
+                            <td colspan="6">
+                                <input type="text"      id="class1_sub"     name="class1_sub"   value="" placeholder="Subclass"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class1_sub_list"></ul>
+                                <label>Subclass</label>
+                            </td>
+                            <td colspan="2">
+                                <input type="text"      id="class1_level"   name="class1_level" value="" placeholder="Level"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class1_level_list">
+                                    <li>1</li>
+                                    <li>2</li>
+                                    <li>3</li>
+                                    <li>4</li>
+                                    <li>5</li>
+                                    <li>6</li>
+                                    <li>7</li>
+                                    <li>8</li>
+                                    <li>9</li>
+                                    <li>10</li>
+                                    <li>11</li>
+                                    <li>12</li>
+                                    <li>13</li>
+                                    <li>14</li>
+                                    <li>15</li>
+                                    <li>16</li>
+                                    <li>17</li>
+                                    <li>18</li>
+                                    <li>19</li>
+                                    <li>20</li>
+                                </ul>
+                                <label>Level</label>
+                            </td>
+                            <td colspan="2">
+                                <input type="text"      id="class1_exp"     name="class1_exp"       placeholder="XP">
+                                <label>XP</label>
+                            </td>
+                        </tr>
+                        <tr id="class_control">
+                            <td colspan="10"></td>
+                            <td colspan="3"><input type="button"    id="add_class"      value="Add Class"/></td>
+                            <td colspan="3"><input type="button"    id="remove_class"   value="Remove Class"/></td>
+                        </tr>
+                    </table>
+                    <h3>Class Features</h3>
+                    <p>Class Features.</p>
+                </div>
+            </fieldset>
+            <fieldset class="container">
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="text"      id="background"     name="background"       value="" placeholder="Background"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="background_list"></ul>
+                            </td>
+                            <td>
+                                <input type="text"      id="alignment"      name="alignment"        value="" placeholder="Alignment"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="alignment_list">
+                                    <li>Lawful Good</li>
+                                    <li>Lawful Neutral</li>
+                                    <li>Lawful Evil</li>
+                                    <li>Neutral Good</li>
+                                    <li>True Neutral</li>
+                                    <li>Neutral Evil</li>
+                                    <li>Chaotic Good</li>
+                                    <li>Chaotic Neutral</li>
+                                    <li>Chaotic Evil</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <h3>Background</h3>
+                    <p>Background Information.</p>
+                </div>
+            </fieldset>
+        </form>
+
+        <script>
+            var races = {};
+            var race = "";
+            var class_num = 1;
+
+            async function getFile(url) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+
+                    return await response;
+                } catch (error) {
+                    console.error(error.message);
+                }
+            }
+
+            async function getData(url) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+
+                    return await response.json();
+                } catch (error) {
+                    console.error(error.message);
+                }
+            }
+
+            function getRace(id) {
+                return races[id];
+            }
+
+            async function getRaces() {
+                var data = await getData("https://5e.tools/data/races.json");
+
+                for (var i = 0; i < data["race"].length; i++) {
+                    races[data["race"][i].name + "_" + data["race"][i].source] = {
+                        full_name:  data["race"][i].name,
+                        id:         data["race"][i].name + "_" + data["race"][i].source,
+                        name:       data["race"][i].name,
+                        parent:     "",
+                        source:     data["race"][i].source,
+                        sub_name:   "",
+                        subraces:   []
+                    };
+                }
+                for (var i = 0; i < data["subrace"].length; i++) {
+                    if (data["subrace"][i].name != undefined) {
+                        races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source] = {
+                            full_name:  data["subrace"][i].raceName + " (" + data["subrace"][i].name + ")",
+                            id:         data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source,
+                            name:       data["subrace"][i].raceName,
+                            parent:     data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource,
+                            source:     data["subrace"][i].source,
+                            sub_name:   data["subrace"][i].name,
+                            subraces:   []
+                        };
+                        races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource].subraces.push(
+                            data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source
+                        );
+                    }
+                }
+
+                let str = "";
+                for (const [id, race] of Object.entries(races)) {
+                    if (race.parent == "") {
+                        str += "<li id=\"" + race.id + "\"><p>";
+                        str += race.name + "<span class=\"source\">[" + race.source + "]</span>";
+                        str += "</p></li>\n";
+                        for (var i = 0; i < race.subraces.length; i++) {
+                            str += "<li id=\"" + races[race.subraces[i]].id + "\" class=\"sub\"><p>";
+                            str += races[race.subraces[i]].full_name + "<span class=\"source\">[" + races[race.subraces[i]].source + "]</span>";
+                            str += "</p></li>\n";
+                        }
+                    }
+                }
+                document.getElementById("race_list").innerHTML += str;
+                update_dropdowns();
+
+                /*races = data;
+
+                document.getElementById("race").onchange = async function() {
+                    var data = await getData("https://5e.tools/data/fluff-races.json");
+
+                    var isSubrace = false;
+                    var race = races["race"].find(o => o.name + "_" + o.source == document.getElementById("race").value);
+                    if (race == undefined) {
+                        isSubrace = true;
+                        race = races["subrace"].find(o => o.name + "_" + o.source + "_" + o.raceName + "_" + o.raceSource == document.getElementById("race").value);
+                    }
+
+                    if (isSubrace) {
+                        document.getElementById("raceName").textContent = race.name + " " + race.raceName;
+                    } else {
+                        document.getElementById("raceName").textContent = race.name;
+                    }
+                    
+                    try {
+                        var mainRace = document.getElementById("race").value.split("_").slice(-2);
+                        var subRace = mainRace[0] + " (" + document.getElementById("race").value.split("_")[0] + ")";
+                        var raceString = mainRace[0] + "_" + mainRace[1];
+                        document.getElementById("raceDescription").innerHTML = "";
+
+                        var flavorText = "";
+                        if (isSubrace) {
+                            flavorText = data["raceFluff"].find(o => o.name == subRace)["_copy"]["_mod"].entries.items.entries[0].entries;
+                            flavorText.forEach(element => {
+                                document.getElementById("raceDescription").innerHTML += "<p>" + element + "</p>";
+                            });
+                            document.getElementById("raceDescription").innerHTML += "<br>";
+                        }
+                        flavorText = data["raceFluff"].find(o => o.name + "_" + o.source == raceString).entries[0].entries[0].entries;
+                        flavorText.forEach(element => {
+                            if (typeof element == "string") {
+                                document.getElementById("raceDescription").innerHTML += "<p>" + element + "</p>";
+                            } else {
+                                document.getElementById("raceDescription").innerHTML += "<h3>" + element.name + "</h3>\n";
+                                element.entries.forEach(entry => {
+                                    if (typeof entry == "string") {
+                                        document.getElementById("raceDescription").innerHTML += "<p>" + entry + "</p>";
+                                    } else {
+                                        document.getElementById("raceDescription").innerHTML += "<h4>" + entry.name + "</h4>\n";
+                                        entry.entries.forEach(subentry => {
+                                            document.getElementById("raceDescription").innerHTML += "<p>" + subentry + "</p>";
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    } catch {
+                        console.log("No description found for " + document.getElementById("raceName").textContent);
+                    }
+                };*/
+            }
+
+            function add_class() {
+                class_num += 1;
+                var str = `<tr>
+                            <td colspan="6">
+                                <input type="text"      id="class${class_num}"         name="class${class_num}"       value="" placeholder="Class"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class${class_num}_list"></ul>
+                                <label>Class</label>
+                            </td>
+                            <td colspan="6">
+                                <input type="text"      id="class${class_num}_sub"     name="class${class_num}_sub"   value="" placeholder="Subclass"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class${class_num}_sub_list"></ul>
+                                <label>Subclass</label>
+                            </td>
+                            <td colspan="2">
+                                <input type="text"      id="class${class_num}_level"   name="class${class_num}_level" value="" placeholder="Level"
+                                    class="chosen-value">
+                                <ul class="value-list"  id="class${class_num}_level_list">
+                                    <li>1</li>
+                                    <li>2</li>
+                                    <li>3</li>
+                                    <li>4</li>
+                                    <li>5</li>
+                                    <li>6</li>
+                                    <li>7</li>
+                                    <li>8</li>
+                                    <li>9</li>
+                                    <li>10</li>
+                                    <li>11</li>
+                                    <li>12</li>
+                                    <li>13</li>
+                                    <li>14</li>
+                                    <li>15</li>
+                                    <li>16</li>
+                                    <li>17</li>
+                                    <li>18</li>
+                                    <li>19</li>
+                                    <li>20</li>
+                                </ul>
+                                <label>Level</label>
+                            </td>
+                            <td colspan="2">
+                                <input type="text"      id="class${class_num}_exp"     name="class${class_num}_exp"       placeholder="XP">
+                                <label>Experience Points</label>
+                            </td>
+                        </tr>
+                        <tr id="class_control">
+                            <td colspan="10"></td>
+                            <td colspan="3"><input type="button"    id="add_class"      value="Add Class"/></td>
+                            <td colspan="3"><input type="button"    id="remove_class"   value="Remove Class"/></td>
+                        </tr>`;
+
+                var element = document.getElementById("class_control");
+                element.parentNode.removeChild(element);
+
+                document.getElementById("class_list").children[0].children[0].innerHTML += str;
+                document.getElementById("add_class").addEventListener("click", add_class);
+                document.getElementById("remove_class").addEventListener("click", remove_class);
+
+                update_dropdowns();
+            }
+
+            async function get_classes() {
+                var data = await getData("https://5e.tools/data/class/index.json");
+                
+                console.log(data);
+
+                var str = "";
+                for (const [id, class_string] of Object.entries(data)) {
+                    var class_struct = await getData(`https://5e.tools/data/class/${class_string}`);
+                    str += "<li id=\"" + class_struct.class[0].name + "_" + class_struct.class[0].struct + "\"><p>";
+                    str += class_struct.class[0].name;
+                    str += "</p></li>\n";
+                }
+                
+                for (var i = 1; i <= class_num; i++) {
+                    document.getElementById(`class${i}_list`).innerHTML = str;
+                }
+            }
+
+            function remove_class() {
+                class_num -= 1;
+                var index = document.getElementById("class_list").children[0].children[0].children.length - 2;
+
+                var element = document.getElementById("class_list").children[0].children[0].children[index];
+                element.parentNode.removeChild(element);
+            }
+
+            function update_dropdowns() {
+                var i = 0;
+
+                const inputFields = document.getElementsByClassName("chosen-value");
+                const dropdowns = document.getElementsByClassName("value-list");
+
+                for (let inputField of inputFields) {
+                    let dropdown = dropdowns[i];
+
+                    const dropdownArray = [...dropdown.children];
+                    dropdown.classList.add('closed');
+
+                    let valueArray = [];
+                    dropdownArray.forEach(item => {
+                        valueArray.push(item.textContent);
+                    });
+
+                    const closeDropdown = () => {
+                        dropdown.classList.remove('open');
+                    }
+
+                    inputField.addEventListener('input', () => {
+                        dropdown.classList.add('open');
+                        let inputValue = inputField.value.toLowerCase();
+                        let valueSubstring;
+                        if (inputValue.length > 0) {
+                            for (let j = 0; j < valueArray.length; j++) {
+                                if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
+                                    dropdownArray[j].classList.add('closed');
+                                } else {
+                                    dropdownArray[j].classList.remove('closed');
+                                }
+                            }
+                        } else {
+                            for (let i = 0; i < dropdownArray.length; i++) {
+                                dropdownArray[i].classList.remove('closed');
+                            }
+                        }
+                    });
+
+                    dropdownArray.forEach(item => {
+                        item.addEventListener('click', (evt) => {
+                            
+                            if (inputField.name == "race") {
+                                inputField.value = getRace(item.id).full_name;
+                                race = item.id;
+                            } else {
+                                inputField.value = item.innerText;
+                            }
+                        });
+                    })
+
+                    inputField.addEventListener('focus', () => {
+                        dropdown.classList.add('open');
+                    });
+
+                    inputField.addEventListener('blur', () => {
+                        dropdown.classList.remove('open');
+                    });
+
+                    document.addEventListener('click', (evt) => {
+                        const isDropdown = dropdown.contains(evt.target);
+                        const isInput = inputField.contains(evt.target);
+                        if (!isDropdown && !isInput) {
+                            dropdown.classList.remove('open');
+                        }
+                    });
+                    i += 1;
+                };
+            }
+
+            function init() {
+                getRaces();
+                get_classes();
+            }
+
+            window.onload = init();
+            document.getElementById("add_class").addEventListener("click", add_class);
+            document.getElementById("remove_class").addEventListener("click", remove_class);
+        </script>
+    </body>
+</html>

@@ -8,6 +8,9 @@
 
             body {
                 font-family: "FF Scala Sans";
+
+                color: #FFFFFF;
+                background-color: #111111;
             }
 
             h1, h2, h3, h4, h5, h6 {
@@ -17,11 +20,17 @@
             }
             p {
                 margin: 0px;
+                font-family: "FF Scala Sans";
+                font-weight: 100;
+            }
+            strong {
+                font-family: "FF Scala Sans";
+                font-weight: bold;
             }
 
             .container {
                 display: flex;
-                margin: 4px 0px;
+                margin: 12px 4px;
                 width: calc(100% - 2 * 2px - 2 * 12px);
             }
 
@@ -30,6 +39,9 @@
                 
                 border: 1px solid #808080;
                 border-radius: 6px;
+
+                color: #000000;
+                background-color: #FFFFFF;
             }
 
             #class_list {
@@ -53,10 +65,11 @@
             }
 
             table {
-                width: 100%;
+                width: calc(100% + 24px);
+                margin: -12px;
                 table-layout: fixed;
                 border-collapse: separate;
-                border-spacing: 2px;
+                border-spacing: 12px;
             }
             tr, td {
                 padding: 0px;
@@ -65,11 +78,12 @@
             input, select {
                 width: 100%;
                 height: 100%;
-                padding: 4px;
+                padding: 6px 4px 4px 4px;
                 box-sizing: border-box;
                 font-family: "FF Scala Sans";
 
                 font-size: small;
+                border-radius: 6px 6px 0px 0px;
                 border-width: 0px 0px 1px 0px;
                 border-style: solid;
                 border-color: #808080;
@@ -79,7 +93,9 @@
                 background-color: #EEEEEE;
             }
             input:focus, select:focus {
-                outline: none;
+                outline-color: #808080;
+                outline-style: solid;
+                outline-width: 1px 1px 0px 1px;
             }
 
             label {
@@ -94,13 +110,12 @@
             }
             .value-list {
                 position: absolute;
-                top: 100%;
-                left: 0px;
-                margin: 2px;
+                left: -1px;
+                margin: 0px;
                 padding: 0px;
                 z-index: 5;
 
-                width: calc(100% - 6px);
+                width: 100%;
             }
 
             .value-list {
@@ -110,14 +125,14 @@
 
                 font-size: small;
                 border: 0px solid #808080;
-                border-radius: 4px;
+                border-radius: 0px 0px 6px 6px;
                 background-color: #FFFFFF;
             }
             .value-list.open {
                 max-height: 320px;
                 overflow: auto;
 
-                border-width: 1px;
+                border-width: 0px 1px 1px 1px;
             }
             .value-list > li {
                 position: relative;
@@ -142,6 +157,10 @@
             .value-list > li.sub {
                 padding: 2px 0px 2px 16px;
             }
+
+            .hidden {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -161,7 +180,7 @@
                 </table>
             </fieldset>
             <fieldset class="container">
-                <div>
+                <div id="race_container">
                     <table>
                         <tr>
                             <td>
@@ -173,7 +192,6 @@
                         </tr>
                     </table>
                     <h3>Racial Traits</h3>
-                    <p>Racial Traits.</p>
                 </div>
             </fieldset>
             <fieldset class="container">
@@ -268,6 +286,7 @@
 
         <script>
             var races = {};
+            var race_ids = [];
             var race = "";
             var class_num = 1;
 
@@ -297,42 +316,128 @@
                 }
             }
 
-            function getRace(id) {
-                return races[id];
+            async function getRace(id) {
+                var data = await getData("https://5e.tools/data/races.json");
+                var result = {};
+
+                var race = data["race"].find((o) => o.name + "_" + o.source == id);
+                if (race != undefined) {
+                    result = {
+                        abilities:  race.ability,
+                        entries:    race.entries,
+                        full_name:  race.name,
+                        id:         id,
+                        name:       race.name,
+                        parent:     "",
+                        source:     race.source,
+                        sub_name:   "",
+                        subraces:   []
+                    }
+                } else {
+                    race = data["subrace"].find((o) => o.raceName + "_" + o.raceSource + "_" + o.name + "_" + o.source == id);
+                    result = {
+                        abilities:  race.ability,
+                        entries:    race.entries,
+                        full_name:  race.raceName + " (" + race.name + ")",
+                        id:         id,
+                        name:       race.raceName,
+                        parent:     race.raceName + "_" + race.raceSource,
+                        source:     race.source,
+                        sub_name:   race.name,
+                        subraces:   []
+                    };
+                }
+
+                return result;
             }
 
             async function getRaces() {
                 var data = await getData("https://5e.tools/data/races.json");
+                console.log(data);
+                var id = "";
+                var str = "";
+
+                var element = document.getElementById("race_container");
 
                 for (var i = 0; i < data["race"].length; i++) {
-                    races[data["race"][i].name + "_" + data["race"][i].source] = {
+                    id = data["race"][i].name + "_" + data["race"][i].source;
+
+                    races[id] = {
+                        abilities:  data["race"][i].ability,
+                        entries:    data["race"][i].entries,
                         full_name:  data["race"][i].name,
-                        id:         data["race"][i].name + "_" + data["race"][i].source,
+                        id:         id,
                         name:       data["race"][i].name,
                         parent:     "",
                         source:     data["race"][i].source,
                         sub_name:   "",
                         subraces:   []
                     };
+                    race_ids.push(id);
+
+                    /*str = "";
+                    try {
+                        str += "<p class=\"" + id + " hidden\">";
+                        if (data["race"][i].entries.length > 0) {
+                            data["race"][i].entries.forEach(entry => {
+                                str += "<strong>" + entry.name + ".</strong> ";
+                                entry.entries.forEach(txt => {
+                                    str += txt + "<br>";
+                                });
+                            });
+                        }
+                        str += "</p>\n";
+                    } catch {
+                        console.log("No entries.");
+                    }
+                    element.innerHTML += str;*/
                 }
                 for (var i = 0; i < data["subrace"].length; i++) {
                     if (data["subrace"][i].name != undefined) {
-                        races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source] = {
+                        id = data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source;
+                        races[id] = {
+                            abilities:  data["subrace"][i].ability,
+                            entries:    data["subrace"][i].entries,
                             full_name:  data["subrace"][i].raceName + " (" + data["subrace"][i].name + ")",
-                            id:         data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source,
+                            id:         id,
                             name:       data["subrace"][i].raceName,
                             parent:     data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource,
                             source:     data["subrace"][i].source,
                             sub_name:   data["subrace"][i].name,
                             subraces:   []
                         };
-                        races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource].subraces.push(
-                            data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource + "_" + data["subrace"][i].name + "_" + data["subrace"][i].source
-                        );
+                        races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource].subraces.push(id);
+                        race_ids.push(id);
+
+                        /*str = "";
+                        try {
+                            str += "<p class=\"" + id + " hidden\">";
+                            console.log("Parent: " + races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource]);
+                            if (races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource].entries.length > 0) {
+                                races[data["subrace"][i].raceName + "_" + data["subrace"][i].raceSource].entries.forEach(entry => {
+                                    str += "<strong><i>" + entry.name + ".</i></strong> ";
+                                    entry.entries.forEach(txt => {
+                                        str += txt + "<br>";
+                                    });
+                                });
+                            }
+                            if (data["subrace"][i].entries.length > 0) {
+                                data["subrace"][i].entries.forEach(entry => {
+                                    str += "<strong><i>" + entry.name + ".</i></strong> ";
+                                    entry.entries.forEach(txt => {
+                                        str += txt + "<br>";
+                                    });
+                                });
+                            }
+                            str += "</p>\n";
+                        } catch {
+                            console.log("No entries.");
+                        }
+                        element.innerHTML += str;*/
                     }
                 }
 
-                let str = "";
+                str = "";
                 for (const [id, race] of Object.entries(races)) {
                     if (race.parent == "") {
                         str += "<li id=\"" + race.id + "\"><p>";
@@ -345,10 +450,11 @@
                         }
                     }
                 }
+                races = {};
                 document.getElementById("race_list").innerHTML += str;
                 update_dropdowns();
 
-                /*races = data;
+                /*
 
                 document.getElementById("race").onchange = async function() {
                     var data = await getData("https://5e.tools/data/fluff-races.json");
@@ -493,6 +599,16 @@
                 element.parentNode.removeChild(element);
             }
 
+            function hide_races() {
+                race_ids.forEach(race => {
+                    var elements = [...document.getElementsByClassName(race)];
+                    elements.forEach(element => {
+                        element.classList.remove("hidden");
+                        element.classList.add("hidden");
+                    });
+                });
+            }
+
             function update_dropdowns() {
                 var i = 0;
 
@@ -534,11 +650,22 @@
                     });
 
                     dropdownArray.forEach(item => {
-                        item.addEventListener('click', (evt) => {
+                        item.addEventListener('click', async (evt) => {
                             
                             if (inputField.name == "race") {
-                                inputField.value = getRace(item.id).full_name;
-                                race = item.id;
+                                race = await getRace(item.id);
+                                inputField.value = race.full_name;
+
+                                /*var str = "";
+                                for (var i = 0; i < races[race].entries.length; i++) {
+                                    str += "<p><strong>" + races[race].entries[i].name + ".</strong>";
+                                    str += " " + races[race].entries[i].entries[0];
+                                    for (var j = 1; i < races[race].entries[i].entries.length; j++) {
+                                        str += "</p><p>" + races[race].entries[i].entries[j];
+                                    }
+                                    str += "</p>";
+                                }
+                                document.getElementById("race_traits").innerHTML = str;*/
                             } else {
                                 inputField.value = item.innerText;
                             }
@@ -564,7 +691,7 @@
                 };
             }
 
-            function init() {
+            async function init() {
                 getRaces();
                 get_classes();
             }

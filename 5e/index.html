@@ -1,220 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            @font-face { font-family: 'Modesto Condensed Bold'; src: url('modesto-condensed-bold.ttf'); }
-            @font-face { font-family: 'Bookmania'; src: url("Fontspring-DEMO-bookmania-regular.otf"); }
-            @font-face { font-family: 'FF Scala Sans'; src: url("ScalaSans.otf"); }
-
-            body {
-                font-family: "FF Scala Sans";
-
-                color: #BBBBBB;
-                background-color: #222222;
-            }
-
-            h1, h2, h3, h4, h5, h6 {
-                margin: 16px 0px 8px 0px;
-                font-family: "Modesto Condensed Bold";
-                font-weight: normal;
-
-                color: #D29A38;
-            }
-            p {
-                margin: 0px;
-                font-family: "FF Scala Sans";
-                font-weight: 100;
-            }
-            strong {
-                font-family: "FF Scala Sans";
-                font-weight: bold;
-                color: #D29A38;
-            }
-            a {
-                font-weight: bold;
-                color: #7DB6E8;
-                text-decoration: none;
-            }
-
-            .container {
-                display: flex;
-                margin: 12px 4px;
-                width: calc(100% - 2 * 2px - 2 * 12px);
-            }
-
-            fieldset {
-                padding: 8px;
-                
-                border: 1px solid #444444;
-                border-radius: 6px;
-
-                background-color: #383838;
-            }
-
-            #class_list {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-            }
-            #class_list > div {
-                display: flex;
-                width: 100%;
-                height: 100%;
-            }
-
-            li > p {
-                display: inline;
-                margin: 0px;
-            }
-
-            table {
-                width: calc(100% + 24px);
-                margin: -12px;
-                table-layout: fixed;
-                border-collapse: separate;
-                border-spacing: 12px;
-            }
-            tr, td {
-                padding: 0px;
-            }
-
-            input, select {
-                width: 100%;
-                height: 100%;
-                padding: 6px 4px 4px 4px;
-                box-sizing: border-box;
-                font-family: "FF Scala Sans";
-
-                font-size: small;
-                border-radius: 6px 6px 0px 0px;
-                border-width: 0px 0px 1px 0px;
-                border-style: solid;
-                border-color: #444444;
-                color: #BBBBBB;
-                background-color: #222222;
-
-                transition: all 0.125s ease-in-out;
-            }
-            input:hover, select:hover {
-                background-color: #565656;
-            }
-            input:focus, select:focus {
-                background-color: #565656;
-                outline-color: #444444;
-                outline-style: solid;
-                outline-width: 1px 1px 0px 1px;
-            }
-
-            label {
-                font-family: "FF Scala Sans";
-                font-size: small;
-                font-weight: bold;
-                text-transform: uppercase;
-                margin-left: 2px;
-            }
-
-            td:has(> .value-list), div:has(> .value-list) {
-                position: relative;
-            }
-            .value-list {
-                position: absolute;
-                left: -1px;
-                margin: 0px;
-                padding: 0px;
-                z-index: 5;
-
-                width: 100%;
-                transition: all 0.125s ease-in-out;
-            }
-
-            .value-list {
-                list-style: none;
-                overflow: hidden;
-                max-height: 0;
-
-                font-size: small;
-                border: 0px solid #444444;
-                border-radius: 0px 0px 6px 6px;
-                background-color: #565656;
-            }
-            .value-list.open {
-                max-height: 320px;
-                overflow: auto;
-
-                border-width: 0px 1px 1px 1px;
-            }
-            .value-list > li {
-                position: relative;
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                opacity: 1;
-
-                padding: 2px 0px 2px 4px;
-            }
-            .value-list > li:hover {
-                background-color: #333333;
-            }
-            .value-list > li.closed {
-                max-height: 0;
-                overflow: hidden;
-                display: none;
-                margin: 0px;
-                padding: 0px;
-                opacity: 0;
-            }
-            .value-list > li.sub {
-                padding: 2px 0px 2px 16px;
-            }
-
-            .hidden {
-                display: none;
-            }
-
-            .source {
-                padding-left: 4px;
-                color: #D29A38;
-            }
-            .source.PHB     { color: #337ab7; }
-            .source.MM      { color: green; }
-            .source.DMG     { color: purple; }
-            .source.VGM     { color: gray; }
-            .source.XGE     { color: #ba7c00; }
-            .source.MTF     { color: #1f6e7b; }
-            .source.AI      { color: #5baf04; }
-            .source.TCE     { color: #a24d08; }
-            .source.FTD     { color: #b82a15; }
-            .source.MPMM    { color: #5c758d; }
-
-            .source.AAG     { color: #056b97; }
-            .source.BAM     { color: #056b97; }
-            .source.BGG     { color: #469cb7; }
-            .source.MPP     { color: #a23087; }
-            .source.SatO    { color: #a23087; }
-            .source.BMT     { color: #694165; }
-            .source.DMTCRG  { color: #694165; }
-            .source.SCAG    { color: #76af76; }
-            .source.GRR     { color: #bfa76c; }
-            .source.ERLW    { color: #983426; }
-            .source.EGW     { color: #855a6e; }
-            .source.MOT     { color: #556b2e; }
-            .source.VRGR    { color: #bd000f; }
-            .source.SCC     { color: #be9c56; }
-            .source.TDCSR   { color: #642e4b; }
-            .source.PSZ     { color: #6f8a2d; }
-            .source.PSI     { color: #5d4696; }
-            .source.PSK     { color: #a27135; }
-            .source.PSA     { color: #eec276; }
-            .source.OSA     { color: #933d0f; }
-            .source.PSX     { color: #bb2722; }
-            .source.PSD     { color: #5db7da; }
-            .source.HWCS    { color: #d0914b; }
-        </style>
+        <link rel="stylesheet" type="text/css" href="styles.css"/>
     </head>
     <body>
         <form>
             <fieldset class="container">
-                <table>
+                <table class="invisible">
                     <tr>
                         <td colspan="2">
                             <input type="text"      id="name"           name="name" placeholder="Character Name">
@@ -229,7 +21,7 @@
             </fieldset>
             <fieldset class="container">
                 <div id="race_container">
-                    <table>
+                    <table class="invisible">
                         <tr>
                             <td>
                                 <input type="text"              id="race"           name="race"         value="" placeholder="Race"
@@ -244,7 +36,7 @@
             </fieldset>
             <fieldset class="container">
                 <div id="class_list">
-                    <table>
+                    <table class="invisible">
                         <tr>
                             <td colspan="6">
                                 <input type="text"      id="class1"         name="class1"       value="" placeholder="Class"
@@ -261,28 +53,7 @@
                             <td colspan="2">
                                 <input type="text"      id="class1_level"   name="class1_level" value="" placeholder="Level"
                                     class="chosen-value">
-                                <ul class="value-list"  id="class1_level_list">
-                                    <li>1</li>
-                                    <li>2</li>
-                                    <li>3</li>
-                                    <li>4</li>
-                                    <li>5</li>
-                                    <li>6</li>
-                                    <li>7</li>
-                                    <li>8</li>
-                                    <li>9</li>
-                                    <li>10</li>
-                                    <li>11</li>
-                                    <li>12</li>
-                                    <li>13</li>
-                                    <li>14</li>
-                                    <li>15</li>
-                                    <li>16</li>
-                                    <li>17</li>
-                                    <li>18</li>
-                                    <li>19</li>
-                                    <li>20</li>
-                                </ul>
+                                <ul class="value-list"  id="class1_level_list"></ul>
                                 <label>Level</label>
                             </td>
                             <td colspan="2">
@@ -301,7 +72,7 @@
             </fieldset>
             <fieldset class="container">
                 <div>
-                    <table>
+                    <table class="invisible">
                         <tr>
                             <td>
                                 <input type="text"      id="background"     name="background"       value="" placeholder="Background"
@@ -334,8 +105,15 @@
         <script>
             var races = {};
             var race_ids = [];
-            var race = "";
+            var character_race = "";
+            var character_class = "";
             var class_num = 1;
+
+            var collapsibles = [];
+
+            window.settings = {
+                functionName: "",
+            };
 
             async function getFile(url) {
                 try {
@@ -366,8 +144,8 @@
             function render(str) {
                 var result = str;
                 var regex = /{@([^}]+)}/g;
-                
-                if (typeof result == "string") {
+
+                if (typeof str == "string") {
                     var tags = [...result.matchAll(regex)];
                     if (tags.length > 0) {
                         tags.forEach(match => {
@@ -375,7 +153,15 @@
                                 case "skill":
                                     result = result.replace(match[0], "<a>" + match[1].substr(match[1].indexOf(" ") + 1) + "</a>");
                                     break;
+                                case "sense":
+                                    result = result.replace(match[0], "<a>" + match[1].substr(match[1].indexOf(" ") + 1) + "</a>");
+                                    break;
                                 case "condition":
+                                case "status":
+                                    var condition = match[1].substr(match[1].indexOf(" ") + 1);
+                                    result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/conditionsdiseases.html#" + condition + "_phb\">" + condition + "</a>");
+                                    break;
+                                case "language":
                                     var condition = match[1].substr(match[1].indexOf(" ") + 1);
                                     result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/conditionsdiseases.html#" + condition + "_phb\">" + condition + "</a>");
                                     break;
@@ -384,26 +170,99 @@
                                     var id = item.split("|")[0] + "_" + item.split("|")[1];
                                     result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/items.html#" + id + "\">" + item.split("|")[0] + "</a>");
                                     break;
+                                case "spell":
+                                    var item = match[1].substr(match[1].indexOf(" ") + 1);
+                                    var id = item.split("|")[0];
+                                    if (item.split("|")[1] != undefined) {
+                                        id += "_" + item.split("|")[1];
+                                    } else {
+                                        id += "_phb";
+                                    }
+                                    result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/spells.html#" + id + "\">" + item.split("|")[0] + "</a>");
+                                    break;
+                                case "book":
+                                    var item = match[1].substr(match[1].indexOf(" ") + 1);
+                                    var book = item.split("|")[1];
+                                    var chapter = item.split("|")[2];
+                                    result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/book.html#" + book + "," + chapter + "\">" + item.split("|")[0] + "</a>");
+                                    break;
                                 case "note":
-                                    console.log(match[0], )
                                     result = result.replace(match[0], "<span style=\"font-style: italic; color: #777777\">" + match[1].substr(match[1].indexOf(" ") + 1) + "</span>");
+                                    break;
+                                case "filter":
+                                    var item = match[1].substr(match[1].indexOf(" ") + 1);
+                                    var text = item.split("|")[0];
+                                    var page = item.split("|")[1];
+
+                                    var list = item.split("|");
+                                    var filter = "";
+                                    for (var i = 2; i < list.length; i++) {
+                                        var filter_item = list[i].split("=")[1];
+                                        if (filter_item.match(/\[.*\]/g)) {
+                                            filter_item = filter_item.replace("[", "").replace("]", "").split(";");
+                                            filter += ",flst" + list[i].split("=")[0] + ":min=" + filter_item[0] + "~max=" + filter_item[1];
+                                        } else {
+                                            filter += ",flst" + list[i].split("=")[0] + ":";
+                                            if (filter_item.split(";").length > 1) {
+                                                if (Array.from(filter_item.split(";")[0])[0] == "!") {
+                                                    filter += filter_item.split(";")[0].replace("!", "") + "=2";
+                                                } else {
+                                                    filter += filter_item.split(";")[0] + "=1";
+                                                }
+                                                filter += "~";
+                                                for (var j = 1; j < filter_item.split(";").length; j++) {
+                                                    if (Array.from(filter_item.split(";")[j])[0] == "!") {
+                                                        filter += filter_item.split(";")[j].replace("!", "") + "=2";
+                                                    } else {
+                                                        filter += filter_item.split(";")[j] + "=1";
+                                                    }
+                                                }
+                                            } else {
+                                                if (Array.from(filter_item)[0] == "!") {
+                                                    filter += filter_item.replace("!", "") + "=2";
+                                                } else {
+                                                    filter += filter_item + "=1";
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    result = result.replace(match[0], "<a target=\"_blank\" href=\"https://5e.tools/" + page + ".html#blankhash" + filter + "\">" + text + "</a>");
                                     break;
                             }
                         });
                     }
-                } else {
-                    result = "<table>\n<tr>\n";
-                    str.colLabels.forEach(header => {
-                        result += "<th>" + header + "</th>";
-                    });
-                    result += "</tr>";
-                    str.rows.forEach(row => {
-                        result += "<tr>";
-                        row.forEach(item => {
-                            result += "<td>" + item + "</td>";
+                } else if (typeof str == "object") {
+                    if (str.type == "abilityDc") {
+                        return "";
+                    } else if (str.type == "abilityAttackMod") {
+                        return "";
+                    } else if (str.type == "list") {
+                        result = "<ul>";
+                        str.items.forEach(entry => {
+                            result += "<li>" + render(entry) + "</li>";
+                        });
+                        result += "</ul>";
+                    } else if (str.type == "table") {
+                        result = "<table>\n<tr>\n";
+                        str.colLabels.forEach(header => {
+                            result += "<th>" + render(header) + "</th>";
                         });
                         result += "</tr>";
-                    });
+                        str.rows.forEach(row => {
+                            result += "<tr>";
+                            row.forEach(item => {
+                                result += "<td>" + render(item) + "</td>";
+                            });
+                            result += "</tr>";
+                        });
+                        result += "</table>";
+                    } else if (str.type == "entries") {
+                        result = "<strong>" + result.name + "</strong>\n";
+                        str.entries.forEach(entry => {
+                            result += "<p>" + render(entry) + "</p>";
+                        });
+                    }
                 }
                 return result;
             }
@@ -443,7 +302,7 @@
                 return result;
             }
 
-            async function getRaces() {
+            async function get_race_list() {
                 var data = await getData("https://5e.tools/data/races.json");
 
                 var id = "";
@@ -493,10 +352,72 @@
                 }
                 races = {};
                 document.getElementById("race_list").innerHTML += str;
-                update_dropdowns();
+                //update_dropdowns();
             }
 
-            async function get_backgrounds() {
+            async function get_class_list() {
+                var data = await getData("https://5e.tools/data/class/index.json");
+                
+                var str = "";
+                for (const [id, class_string] of Object.entries(data)) {
+                    var class_struct = await getData(`https://5e.tools/data/class/${class_string}`);
+                    str += "<li id=\"" + class_struct.class[0].name + "_" + class_struct.class[0].source + "\"><p>";
+                    str += class_struct.class[0].name + "<span class=\"source " + class_struct.class[0].source + "\">[";
+                    str += class_struct.class[0].source + "]</span>";
+                    str += "</p></li>\n";
+                }
+                
+                for (var i = 1; i <= class_num; i++) {
+                    document.getElementById(`class${i}_list`).innerHTML = str;
+                }
+            }
+
+            async function get_class_sub_list() {
+                var data = await getData("https://5e.tools/data/class/index.json");
+                var class_struct = await getData(`https://5e.tools/data/class/${data[character_class.toLowerCase()]}`);
+
+                var str = "";
+                class_struct["subclass"].forEach(subclass => {
+                    var id = class_struct.class[0].name + "_" + class_struct.class[0].source + "_" + subclass.shortName + "_" + subclass.source;
+                    str += "<li id=\"" + id + "\"><p>";
+                    str += subclass.name + "<span class=\"source " + subclass.source + "\">[";
+                    str += subclass.source + "]</span>";
+                    str += "</p></li>\n";
+                });
+
+                for (var i = 1; i <= class_num; i++) {
+                    document.getElementById(`class${i}_sub_list`).innerHTML = str;
+                }
+            }
+
+            function get_class_level_list() {
+                var str = `<li id="1">1</li>
+                                    <li id="2">2</li>
+                                    <li id="3">3</li>
+                                    <li id="4">4</li>
+                                    <li id="5">5</li>
+                                    <li id="6">6</li>
+                                    <li id="7">7</li>
+                                    <li id="8">8</li>
+                                    <li id="9">9</li>
+                                    <li id="10">10</li>
+                                    <li id="11">11</li>
+                                    <li id="12">12</li>
+                                    <li id="13">13</li>
+                                    <li id="14">14</li>
+                                    <li id="15">15</li>
+                                    <li id="16">16</li>
+                                    <li id="17">17</li>
+                                    <li id="18">18</li>
+                                    <li id="19">19</li>
+                                    <li id="20">20</li>`;
+
+                for (var i = 1; i <= class_num; i++) {
+                    document.getElementById(`class${i}_level_list`).innerHTML = str;
+                }
+            }
+
+            async function get_background_list() {
                 var data = await getData("https://5e.tools/data/backgrounds.json");
 
                 var str = "";
@@ -509,6 +430,20 @@
                 }
                 document.getElementById("background_list").innerHTML += str;
                 update_dropdowns();
+            }
+
+            function get_alignment_list() {
+                var str = `<li id="Lawful_Good">Lawful Good</li>
+                                    <li id="Lawful_Neutral">Lawful Neutral</li>
+                                    <li id="Lawful_Evil">Lawful Evil</li>
+                                    <li id="Neutral_Good">Neutral Good</li>
+                                    <li id="True_Neutral">True Neutral</li>
+                                    <li id="Neutral_Evil">Neutral Evil</li>
+                                    <li id="Chaotic_Good">Chaotic Good</li>
+                                    <li id="Chaotic_Neutral">Chaotic Neutral</li>
+                                    <li id="Chaotic_Evil">Chaotic Evil</li>`;
+
+                document.getElementById(`alignment_list`).innerHTML = str;
             }
 
             async function add_class() {
@@ -529,28 +464,7 @@
                             <td colspan="2">
                                 <input type="text"      id="class${class_num}_level"   name="class${class_num}_level" value="" placeholder="Level"
                                     class="chosen-value">
-                                <ul class="value-list"  id="class${class_num}_level_list">
-                                    <li>1</li>
-                                    <li>2</li>
-                                    <li>3</li>
-                                    <li>4</li>
-                                    <li>5</li>
-                                    <li>6</li>
-                                    <li>7</li>
-                                    <li>8</li>
-                                    <li>9</li>
-                                    <li>10</li>
-                                    <li>11</li>
-                                    <li>12</li>
-                                    <li>13</li>
-                                    <li>14</li>
-                                    <li>15</li>
-                                    <li>16</li>
-                                    <li>17</li>
-                                    <li>18</li>
-                                    <li>19</li>
-                                    <li>20</li>
-                                </ul>
+                                <ul class="value-list"  id="class${class_num}_level_list"></ul>
                                 <label>Level</label>
                             </td>
                             <td colspan="2">
@@ -571,25 +485,21 @@
                 document.getElementById("add_class").addEventListener("click", add_class);
                 document.getElementById("remove_class").addEventListener("click", remove_class);
                 
-                await get_classes();
                 update_dropdowns();
             }
 
-            async function get_classes() {
+            async function get_class(id) {
                 var data = await getData("https://5e.tools/data/class/index.json");
-                
-                var str = "";
-                for (const [id, class_string] of Object.entries(data)) {
+                var class_struct = await getData(`https://5e.tools/data/class/${data[id.split("_")[0].toLowerCase()]}`);
+                /*for (const [id, class_string] of Object.entries(data)) {
                     var class_struct = await getData(`https://5e.tools/data/class/${class_string}`);
-                    str += "<li id=\"" + class_struct.class[0].name + "_" + class_struct.class[0].source + "\"><p>";
-                    str += class_struct.class[0].name + "<span class=\"source " + class_struct.class[0].source + "\">[";
-                    str += class_struct.class[0].source + "]</span>";
-                    str += "</p></li>\n";
                 }
                 
                 for (var i = 1; i <= class_num; i++) {
                     document.getElementById(`class${i}_list`).innerHTML = str;
-                }
+                }*/
+               console.log(class_struct);
+               return class_struct;
             }
 
             function remove_class() {
@@ -640,42 +550,168 @@
 
             async function dropdown_on_click(event) {
                 const input_field = event.currentTarget.parentNode.parentNode.children[0];
+                const dropdown = event.currentTarget.parentNode;
                 const selected_id = event.currentTarget.id;
 
-                if (input_field.name == "race") {
-                    const race = await getRace(selected_id);
+                switch (input_field.name) {
+                    case "race":
+                        character_race = await getRace(selected_id);
+                        const race = character_race;
 
-                    input_field.value = race.full_name;
+                        input_field.value = race.full_name;
 
-                    var str = "";
-                    if (race.parent != "") {
-                        const parent_race = await getRace(race.parent);
-                        for (var i = 0; i < parent_race.entries.length; i++) {
-                            str += "<p><strong>" + parent_race.entries[i].name + ".</strong>";
-                            str += " " + render(parent_race.entries[i].entries[0]);
-                            for (var j = 1; j < parent_race.entries[i].entries.length; j++) {
-                                str += "</p><p>" + render(parent_race.entries[i].entries[j]);
+                        var str = "";
+                        if (race.parent != "") {
+                            const parent_race = await getRace(race.parent);
+                            for (var i = 0; i < parent_race.entries.length; i++) {
+                                str += "<p><strong>" + parent_race.entries[i].name + ".</strong>";
+                                str += " " + render(parent_race.entries[i].entries[0]);
+                                for (var j = 1; j < parent_race.entries[i].entries.length; j++) {
+                                    str += "</p><p>" + render(parent_race.entries[i].entries[j]);
+                                }
+                                str += "</p>";
+                            }
+                        }
+                        for (var i = 0; i < race.entries.length; i++) {
+                            str += "<p><strong>" + race.entries[i].name + ".</strong>";
+                            str += " " + render(race.entries[i].entries[0]);
+                            for (var j = 1; j < race.entries[i].entries.length; j++) {
+                                str += "</p><p>" + render(race.entries[i].entries[j]);
                             }
                             str += "</p>";
                         }
-                    }
-                    for (var i = 0; i < race.entries.length; i++) {
-                        str += "<p><strong>" + race.entries[i].name + ".</strong>";
-                        str += " " + render(race.entries[i].entries[0]);
-                        for (var j = 1; j < race.entries[i].entries.length; j++) {
-                            str += "</p><p>" + render(race.entries[i].entries[j]);
+                        document.getElementById("race_traits").innerHTML = "<h3>Racial Traits</h3>" + str;
+                        break;
+
+                    case "class1":
+                    case "class2":
+                    case "class3":
+                    case "class4":
+                    case "class5":
+                    case "class6":
+                        var class_struct = await get_class(selected_id);
+                        character_class = class_struct.class[0].name;
+                        input_field.value = class_struct.class[0].name;
+
+                        var str = "";
+                        var id = "";
+                        class_struct.subclass.forEach(subclass => {
+                            id = class_struct.class[0].name + "_" + class_struct.class[0].source + "_" + subclass.shortName + "_" + subclass.source;
+                            str += "<li id=\"" + id + "\">" + subclass.name + "</li>";
+                        });
+                        document.getElementById(input_field.name + "_sub_list").innerHTML = str;
+
+                        str = "";
+                        var class_features = class_struct["class"][0]["classFeatures"];
+                        var class_feature_fluff = class_struct["classFeature"];
+                        var prev_level = 0;
+
+                        for (var i = 0; i < class_features.length; i++) {
+                            var feature = "";
+                            if (typeof class_features[i] == "string") {
+                                feature = class_feature_fluff.find((o) => o.name == class_features[i].split("|")[0] && o.level == class_features[i].split("|")[3]);
+                            } else {
+                                feature = class_feature_fluff.find((o) => o.name == class_features[i]["classFeature"].split("|")[0] && o.level == class_features[i]["classFeature"].split("|")[3]);
+                            }
+                            if (feature.level != prev_level) {
+                                if (prev_level != 0) {
+                                    str += "</div>";
+                                }
+                                str += "<input type=\"button\" id=\"Level_" + feature.level + "\" class=\"collapsible\" value=\"Level " + feature.level + "\" />";
+                                prev_level = feature.level;
+                                str += "<div class=\"content hidden\">";
+                            }
+                            str += "<input type=\"button\" id=\"" + feature.name + "_" + feature.level + "\" class=\"collapsible\" value=\"" + feature.name + "\" />";
+                            str += "<div class=\"content hidden\">";
+                                str += "<p>" + render(feature.entries[0]);
+                                for (var j = 1; j < feature.entries.length; j++) {
+                                    str += "</p><p>" + render(feature.entries[j]);
+                                }
+                                str += "</p>";
+                            str += "</div>";
                         }
-                        str += "</p>";
-                    }
-                    document.getElementById("race_traits").innerHTML = "<h3>Racial Traits</h3>" + str;
-                } else {
-                    input_field.value = selected_id;
+                        document.getElementById("class_traits").innerHTML = "<h3>Class Features</h3>" + str;
+                        update_collapsibles();
+                        break;
+                    
+                    case "class1_sub":
+                    case "class2_sub":
+                    case "class3_sub":
+                    case "class4_sub":
+                    case "class5_sub":
+                    case "class6_sub":
+                        var class_id = selected_id.split("_")[0] + "_" + selected_id.split("_")[1];
+                        var class_struct = await get_class(class_id);
+                        input_field.value = class_struct.subclass.find((o) => o.shortName == selected_id.split("_")[2]).name;
+
+                        console.log(input_field.value);
+
+                        var str = "";
+                        var class_features = class_struct.subclass.find((o) => o.shortName == selected_id.split("_")[2])["subclassFeatures"];
+                        var class_feature_fluff = class_struct["subclassFeature"];
+                        var prev_level = 0;
+
+                        console.log(class_features);
+                        for (var i = 0; i < class_features.length; i++) {
+                            var feature = "";
+                            str = "";
+                            if (typeof class_features[i] == "string") {
+                                feature = class_feature_fluff.find((o) => o.name == class_features[i].split("|")[0] && o.level == class_features[i].split("|")[5]);
+                            } else {
+                                feature = class_feature_fluff.find((o) => o.name == class_features[i]["subclassFeature"].split("|")[0] && o.level == class_features[i]["classFeature"].split("|")[5]);
+                            }
+                            str += "<input type=\"button\" id=\"" + feature.name + "_" + feature.level + "\" class=\"collapsible\" value=\"" + feature.name + "\" />";
+                            str += "<div class=\"content hidden\">";
+                                str += "<p>" + render(feature.entries[0]);
+                                for (var j = 1; j < feature.entries.length; j++) {
+                                    str += "</p><p>" + render(feature.entries[j]);
+                                }
+                                str += "</p>";
+                            str += "</div>";
+                            var element = document.getElementById("Level_" + feature.level).nextElementSibling;
+                            if (element.children.length > 0) {
+                                element.children[element.children.length - 1].innerHTML += str;
+                            } else {
+                                element.innerHTML += str;
+                            }
+                        }
+                        update_collapsibles();
+                        break;
+
+                    default:
+                        var str = document.getElementById(selected_id).children[0].cloneNode(true);
+                        str.removeChild(str.children[0]);
+                        console.log(str);
+                        input_field.value = str.innerText;
+                        break;
                 }
+
+                dropdown.innerHTML = "";
+            }
+
+            async function update_dropdown(name) {
+                var function_name = "get_" + name + "_list";
+                if (name.includes("class")) {
+                    function_name = "get_class" + name.slice(6) + "_list";
+                }
+                console.log(function_name);
+                if (typeof window[function_name] == "function") {
+                    await window[function_name]();
+                }
+
+                const input_field = document.getElementById(name);
+                const dropdown = document.getElementById(name + "_list");
+
+                const dropdownArray = [...dropdown.children];
+                dropdown.classList.add('closed');
+
+                dropdownArray.forEach(item => {
+                    item.addEventListener('click', dropdown_on_click);
+                });
             }
 
             function update_dropdowns() {
                 var i = 0;
-
                 const inputFields = document.getElementsByClassName("chosen-value");
                 const dropdowns = document.getElementsByClassName("value-list");
 
@@ -685,22 +721,10 @@
                     const dropdownArray = [...dropdown.children];
                     dropdown.classList.add('closed');
 
-                    let valueArray = [];
-                    dropdownArray.forEach(item => {
-                        valueArray.push(item.textContent);
-                    });
-
-                    const closeDropdown = () => {
-                        dropdown.classList.remove('open');
-                    }
-
                     inputField.addEventListener('input', dropdown_on_input);
 
-                    dropdownArray.forEach(item => {
-                        item.addEventListener('click', dropdown_on_click);
-                    });
-
-                    inputField.addEventListener('focus', () => {
+                    inputField.addEventListener('focus', (event) => {
+                        update_dropdown(event.target.name);
                         dropdown.classList.add('open');
                     });
 
@@ -712,6 +736,7 @@
                         const isDropdown = dropdown.contains(evt.target);
                         const isInput = inputField.contains(evt.target);
                         if (!isDropdown && !isInput) {
+                            dropdown.innerHTML = "";
                             dropdown.classList.remove('open');
                         }
                     });
@@ -719,10 +744,34 @@
                 };
             }
 
+            function collapsible_on_click(event) {
+                const content = event.currentTarget.nextElementSibling;
+                content.classList.toggle("hidden");
+            }
+
+            function update_collapsible(name) {
+                if (typeof name == "string") {
+                    document.getElementById(name).addEventListener("click", collapsible_on_click);
+                } else {
+                    name.addEventListener("click", collapsible_on_click);
+                }
+            }
+
+            function update_collapsibles() {
+                var coll = document.getElementsByClassName("collapsible");
+                var i;
+
+                for (i = 0; i < coll.length; i++) {
+                    update_collapsible(coll[i]);
+                }
+            }
+
             async function init() {
-                getRaces();
-                get_classes();
-                get_backgrounds();
+                //getRaces();
+                //get_classes();
+                //get_backgrounds();
+                update_dropdowns();
+                update_collapsibles();
             }
 
             window.onload = init();

@@ -10,21 +10,39 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    margin: 4px 0px;
+    /*font-family: "Modesto Condensed Bold";*/
+    font-family: 'Times New Roman', serif;
+    font-variant: small-caps;
+}
+h1 {
     margin: 16px 0px 8px 0px;
-    font-family: "Modesto Condensed Bold";
-    font-weight: normal;
-
     color: #D29A38;
 }
-p {
-    margin: 4px;
-    font-family: "FF Scala Sans";
-    font-weight: 100;
-}
-strong {
-    font-family: "FF Scala Sans";
-    font-weight: bold;
+h2 {
+    margin: 12px 0px 6px 0px;
     color: #D29A38;
+    border-bottom: 1px solid #D29A38;
+}
+h3 {
+    margin: 8px 0px 4px 0px;
+    color: #D29A38;
+}
+h4, h5, h6 {
+    display: inline-block;
+    color: #BBBBBB;
+    font-family: "FF Scala Sans";
+    font-style: italic;
+}
+h4::after, h5::after, h6::after {
+    content: ".";
+    font-style: italic;
+}
+h4.collapsible::after, h5.collapsible::after, h6.collapsible::after {
+    display: none;
+}
+p, li {
+    margin: 6px 0px;
 }
 a {
     font-weight: bold;
@@ -36,6 +54,16 @@ a {
     display: flex;
     margin: 12px 4px;
     width: calc(100% - 2 * 2px - 2 * 12px);
+}
+
+.inset {
+    margin: 6px 0px;
+    padding: 4px;
+    border-radius: 6px;
+    background-color: #323431;
+}
+.inset > h4::after {
+    display: none;
 }
 
 fieldset {
@@ -58,7 +86,7 @@ fieldset {
     height: 100%;
 }
 
-li > p {
+.value-list > li > p {
     display: inline;
     margin: 0px;
 }
@@ -133,27 +161,47 @@ input:focus, select:focus {
     display: inline-block;
 }
 .collapsible {
-    width: calc(100% - 2 * 4px);
+    width: calc(100%);
     height: unset;
-    margin: 4px;
-    border-radius: 6px;
+    margin: -2px;
+    padding: 2px;
+    border-radius: 6px 6px 0px 0px;
+    cursor: pointer;
+
+    transition: all 0.1s ease-in-out;
+}
+.collapsible:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+.collapsible::after {
+    content: "";
+    font-size: 0.5em;
+    float: right;
+    transform: translateY(50%);
+}
+.collapsible.expand::after {
+    content: "Expand";
+}
+    /*margin: 4px 0px;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    border-radius: 6px 6px 0px 0px;
     border-width: 1px;
+    border-style: solid;
+    border-color: #444444;
+    background-color: #222222;
     text-align: left;
     cursor: pointer;
 }
 .collapsible:hover {
     background-color: #565656;
-}
-.content {
-    width: calc(100% - 2px - 2 * 4px - 2 * 4px);
-    margin: 4px;
-    margin-top: -12px;
-    padding: 12px 4px 4px 4px;
-    border-color: #444444;
-    border-radius: 0px 0px 6px 6px;
-    border-style: solid;
-    border-width: 0px 1px 1px 1px;
-}
+}*/
+/*.collapsible::before {
+    display: inline-block;
+    content: attr(data-descr);
+    padding-right: 6px;
+    min-width: 55px;
+}*/
 
 label {
     font-family: "FF Scala Sans";
@@ -200,6 +248,7 @@ td:has(> .value-list), div:has(> .value-list) {
     cursor: pointer;
     opacity: 1;
 
+    margin: 0px;
     padding: 2px 0px 2px 4px;
 }
 .value-list > li:hover {
